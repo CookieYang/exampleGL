@@ -263,3 +263,5 @@ glExamples/glExamples.sln
 glExamples/glExamples/glExamples.vcxproj.filters
 glExamples/glExamples/glExamples.vcxproj
 *.sbm
+*.ktx
+*.raw

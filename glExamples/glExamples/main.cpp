@@ -1,2 +1,2 @@
-#include "DOF.h"
-DECLARE_MAIN(dof)
+#include "envmapsphere.h"
+DECLARE_MAIN(Envmap)
