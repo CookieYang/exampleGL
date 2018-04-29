@@ -1,2 +1,2 @@
-#include "envmapsphere.h"
-DECLARE_MAIN(Envmap)
+#include "equirectangle.h"
+DECLARE_MAIN(Equirectangle)
