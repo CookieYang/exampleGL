@@ -1,2 +1,2 @@
-#include "equirectangle.h"
-DECLARE_MAIN(Equirectangle)
+#include "perpixelgloss.h"
+DECLARE_MAIN(PerPixelGloss)

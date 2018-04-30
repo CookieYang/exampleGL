@@ -5,7 +5,7 @@
 class Equirectangle :public baseClass::application {
 public:
 	void start() {
-		envmap_index = 0;
+		envmap_index = 0; 
 		shader = Shader("shaders/equirectangular/render.vs", "shaders/equirectangular/render.fs");
 		uniforms.mv_matrix = glGetUniformLocation(shader.Program, "mv_matrix");
 		uniforms.proj_matrix = glGetUniformLocation(shader.Program, "proj_matrix");
