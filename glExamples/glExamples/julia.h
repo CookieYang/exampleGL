@@ -112,7 +112,6 @@ public:
 		uniforms.offset = glGetUniformLocation(shader.Program, "offset");
 		uniforms.C = glGetUniformLocation(shader.Program, "C");
 
-
 		glGenVertexArrays(1, &vao);
 		glBindVertexArray(vao);
 		glGenTextures(1, &palette_texture);
