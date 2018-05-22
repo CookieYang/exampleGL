@@ -92,7 +92,7 @@ public:
 		PARTICLE* const __restrict dst = particles[(frame_index + 1) & 1];
 
 		// For each particle in the system
-//#pragma omp parallel for schedule (dynamic, 16)
+#pragma omp parallel for schedule (dynamic, 16)
 		for (int i = 0; i < PARTICLE_COUNT; i++)
 		{
 			// Get my own data
