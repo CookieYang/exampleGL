@@ -8,13 +8,15 @@ public:
 		shader = Shader("D://ogl/glExamples/glExamples/shaders/perpixelgloss/render.vs", "D://ogl/glExamples/glExamples/shaders/perpixelgloss/render.fs");
 		uniforms.mv_matrix = glGetUniformLocation(shader.Program, "mv_matrix");
 		uniforms.proj_matrix = glGetUniformLocation(shader.Program, "proj_matrix");
+
 		glActiveTexture(GL_TEXTURE0);
-		tex_envmap = ktx::load("media/envmaps/mountains3d.ktx");
+		tex_envmap = ktx::load("D://ogl/media/envmaps/mountains3d.ktx");
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
 		glActiveTexture(GL_TEXTURE1);
 		tex_glossmap = ktx::load("D://ogl/media/pattern1.ktx");
 		obj.load("D://ogl/media/torus_nrms_tc.sbm");
