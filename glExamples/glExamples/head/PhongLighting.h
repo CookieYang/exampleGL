@@ -5,8 +5,8 @@ public:
 	void start() {
 		per_fragment = true;
 
-		gouraud = Shader("shaders/ponglighting/gouraud.vs", "shaders/ponglighting/gouraud.fs");
-		pong = Shader("shaders/ponglighting/pong.vs", "shaders/ponglighting/pong.fs");
+		gouraud = Shader("E://ogl/glExamples/glExamples/shaders/ponglighting/gouraud.vs", "E://ogl/glExamples/glExamples/shaders/ponglighting/gouraud.fs");
+		pong = Shader("E://ogl/glExamples/glExamples/shaders/ponglighting/pong.vs", "E://ogl/glExamples/glExamples/shaders/ponglighting/pong.fs");
 		uniforms[0].diffuse_albedo = glGetUniformLocation(gouraud.Program, "diffuse_albedo");
 		uniforms[0].specular_albedo = glGetUniformLocation(gouraud.Program, "specular_albedo");
 		uniforms[0].specular_power = glGetUniformLocation(gouraud.Program, "specular_power");
@@ -18,7 +18,7 @@ public:
 		glBindBuffer(GL_UNIFORM_BUFFER, uniforms_buffer);
 		glBufferData(GL_UNIFORM_BUFFER, sizeof(uniforms_block), NULL, GL_DYNAMIC_DRAW);
 
-		obj.load("media/sphere.sbm");
+		obj.load("E://ogl/media/sphere.sbm");
 
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
