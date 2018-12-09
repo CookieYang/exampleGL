@@ -1,6 +1,6 @@
 #version 430 core
 
-layout (location = 0) in vec2 position;
+in vec2 position;
 
 uniform mat4 mvp_matrix;
 
@@ -9,17 +9,9 @@ uniform sampler2D particlesDataTexture;
 out float lifeTime;
 
 void main(void){
-	vec4 P = mv_matrix * position;
-
-	vs_out.N = mat3(mv_matrix) * normal;
-
-	vs_out.L = light_pos - P.xyz;
-
-	vs_out.V = -P.xyz;
-
-	gl_ClipDistance[0] = dot(position, clip_plane);
-	gl_ClipDistance[1] = length(position.xyz / position.w - clip_sphere.xyz) - clip_sphere.w;
-
-	gl_Position = proj_matrix * P;
+	vec4 particlePosition = vec4(texture(particlesDataTexture, position).xyz, 1.0);
+	lifeTime = texture(particlesDataTexture, position).w;
+	gl_PointSize = 10.0f;
+	gl_Position = mvp_matrix * particlePosition;
 }
 
