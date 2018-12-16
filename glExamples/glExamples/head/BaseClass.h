@@ -19,7 +19,7 @@ namespace baseClass
 		{
 			glfwInit();
 
-			window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+			window = glfwCreateWindow(1024, 1024, "LearnOpenGL", NULL, NULL);
 			if (window == NULL) {
 				std::cout << "Failed to create GLFW window" << std::endl;
 				return -1;
@@ -28,7 +28,7 @@ namespace baseClass
 			glfwMakeContextCurrent(window);
 		//	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 			glewInit();
-			glViewport(0, 0, 800, 600);
+			glViewport(0, 0, 1024, 1024);
 			start();
 			glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 			glfwSetCursorPosCallback(window, Camera::processMousePosition);
