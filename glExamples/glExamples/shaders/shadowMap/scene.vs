@@ -8,6 +8,7 @@ uniform mat4 model_matrix;
 uniform mat4 proj_matrix;
 uniform mat4 light_matrix;
 uniform vec3 light_position;
+uniform mat4 bias_matrix;
 
 out vec4 f_color;
 out vec3 f_normal;
@@ -23,7 +24,7 @@ void main(void){
 	coord = vertices[gl_VertexID].xy;
     gl_Position = vertices[gl_VertexID];*/
     
-    shadowPosition = proj_matrix * light_matrix * model_matrix * position;
+    shadowPosition = bias_matrix * proj_matrix * light_matrix * model_matrix * position;
     f_normal = mat3(view_matrix * model_matrix) * normal;
     f_eye = -vec3(view_matrix * model_matrix * position);
     gl_Position = proj_matrix * view_matrix * model_matrix * position;

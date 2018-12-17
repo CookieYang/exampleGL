@@ -5,8 +5,8 @@
 class ShadowMap : public baseClass::application {
 public:
 	void start() {
-		shadowMapShader = Shader("E://ogl/glExamples/glExamples/shaders/shadowMap/shadowMap.vs", "E://ogl/glExamples/glExamples/shaders/shadowMap/shadowMap.fs");
-		sceneShader = Shader("E://ogl/glExamples/glExamples/shaders/shadowMap/scene.vs", "E://ogl/glExamples/glExamples/shaders/shadowMap/scene.fs");
+		shadowMapShader = Shader("D://ogl/glExamples/glExamples/shaders/shadowMap/shadowMap.vs", "D://ogl/glExamples/glExamples/shaders/shadowMap/shadowMap.fs");
+		sceneShader = Shader("D://ogl/glExamples/glExamples/shaders/shadowMap/scene.vs", "D://ogl/glExamples/glExamples/shaders/shadowMap/scene.fs");
 
 		shadowMapUniform.model_matrix = glGetUniformLocation(shadowMapShader.Program, "model_matrix");
 		shadowMapUniform.view_matrix = glGetUniformLocation(shadowMapShader.Program, "view_matrix");
@@ -17,11 +17,12 @@ public:
 		sceneUniform.view_matrix = glGetUniformLocation(sceneShader.Program, "view_matrix");
 		sceneUniform.proj_matrix = glGetUniformLocation(sceneShader.Program, "proj_matrix");
 		sceneUniform.light_matrix = glGetUniformLocation(sceneShader.Program, "light_matrix");
+		sceneUniform.bias_matrix = glGetUniformLocation(sceneShader.Program, "bias_matrix");
 		sceneUniform.light_position = glGetUniformLocation(sceneShader.Program, "light_position");
 		sceneUniform.obj_color = glGetUniformLocation(sceneShader.Program, "obj_color");
 
-		torus.load("E://ogl/media/torus_nrms_tc.sbm");
-		cube.load("E://ogl/media/cube.sbm");
+		torus.load("D://ogl/media/torus_nrms_tc.sbm");
+		cube.load("D://ogl/media/cube.sbm");
 
 		glEnable(GL_DEPTH_TEST);
 		//glDepthFunc(GL_GREATER);
@@ -29,7 +30,7 @@ public:
 		glGenFramebuffers(1, &shadowFBO);
 		glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
 
-		testTexture = ktx::load("E://ogl/media/baboon.ktx");
+		testTexture = ktx::load("D://ogl/media/baboon.ktx");
 
 		glGenTextures(1, &shadowTexture);
 		glBindTexture(GL_TEXTURE_2D, shadowTexture);
@@ -47,6 +48,8 @@ public:
 
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
+
+		glPolygonOffset(1.0f, 0.0f);
 	}
 
 	void render(double time) {
@@ -61,7 +64,7 @@ public:
 		vmath::mat4 ortho_matrix = vmath::ortho(10.0f, 10.0f, 40.0f, 10.0f, 0.1f, 1000.0f);
 
 		vmath::vec3 view_position = vmath::vec3(0.0f , 0.0f, 100.0f );
-		vmath::vec3 light_position = vmath::vec3(0.0f, 0.0f, 80.0f);
+		vmath::vec3 light_position = vmath::vec3(0.0f, 20.0f, 80.0f);
 
 		vmath::mat4 view_matrix = vmath::lookat(view_position,
 			vmath::vec3(0.0f, 0.0f, 0.0f),
@@ -70,6 +73,8 @@ public:
 		vmath::mat4 light_matrix = vmath::lookat(light_position,
 			vmath::vec3(0.0f, 0.0f, 0.0f),
 			vmath::vec3(0.0f, 1.0f, 0.0f));
+
+		vmath::mat4 bias_matrix = vmath::mat4(vmath::vec4(0.5f, 0.0f, 0.0f, 0.0f), vmath::vec4(0.0f, 0.5f, 0.0f, 0.0f), vmath::vec4(0.0f, 0.0f, 0.5f, 0.0f), vmath::vec4(0.5f, 0.5f, 0.5f, 1.0f));
 
 		vmath::mat4 cube_matrix = vmath::translate(vmath::vec3(0.0f, 0.0f, -100.0f)) * vmath::scale(50.0f);
 
@@ -81,12 +86,26 @@ public:
 		glUniformMatrix4fv(shadowMapUniform.view_matrix, 1, GL_FALSE, light_matrix);
 		glUniformMatrix4fv(shadowMapUniform.proj_matrix, 1, GL_FALSE, proj_matrix);
 		glUniform4fv(shadowMapUniform.obj_color, 1, red);
+
+		glEnable(GL_POLYGON_OFFSET_FILL);
+		glFrontFace(GL_CW);
+
 		cube.render();
+
+		glDisable(GL_POLYGON_OFFSET_FILL);
+		glFrontFace(GL_CCW);
 
 		vmath::mat4 torus_matrix = vmath::translate(vmath::vec3(0.0f, 0.0f, 10.0f)) * vmath::scale(5.0f);
 		glUniformMatrix4fv(shadowMapUniform.model_matrix, 1, GL_FALSE, torus_matrix);
 		glUniform4fv(shadowMapUniform.obj_color, 1, green);
+
+		glEnable(GL_POLYGON_OFFSET_FILL);
+		glFrontFace(GL_CW);
+
 		torus.render();
+
+		glDisable(GL_POLYGON_OFFSET_FILL);
+		glFrontFace(GL_CCW);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDrawBuffer(GL_BACK);
@@ -105,6 +124,7 @@ public:
 		glUniformMatrix4fv(sceneUniform.view_matrix, 1, GL_FALSE, view_matrix);
 		glUniformMatrix4fv(sceneUniform.proj_matrix, 1, GL_FALSE, proj_matrix);
 		glUniformMatrix4fv(sceneUniform.light_matrix, 1, GL_FALSE, light_matrix);
+		glUniformMatrix4fv(sceneUniform.bias_matrix, 1, GL_FALSE, bias_matrix);
 		glUniform3fv(sceneUniform.light_position, 1, light_position);
 		glUniform4fv(sceneUniform.obj_color, 1, green);
 		cube.render();
@@ -132,6 +152,7 @@ private:
 		GLuint proj_matrix;
 		GLuint light_position;
 		GLuint light_matrix;
+		GLuint bias_matrix;
 		GLuint obj_color;
 	}sceneUniform;
 

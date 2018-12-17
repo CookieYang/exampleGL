@@ -21,8 +21,9 @@ void main(void){
     float currentDepth = projCoords.z;
     // 检查当前片元是否在阴影中
     float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
 	//color = 100 * (vec4(1.0f) - texture(depthTex,coord)); */
-	if (textureProj(depthTex, shadowPosition) < 1.0)
+	if (textureProj(depthTex, shadowPosition)  < 1.0)
 	//if (abs(shadow - 0.0) < 0.1)
 	{
 		color = vec4(0.1f, 0.1f, 0.1f, 1.0f);
